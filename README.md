@@ -1,5 +1,8 @@
 # memo-relation
 
+- メモを管理するWebアプリ
+- MongoDB
+
 ## Getting Started
 
 First, run the development server:
