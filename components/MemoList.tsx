@@ -15,7 +15,7 @@ export default function MemoList() {
 
   return <List>
     {memos.map(memo => <ListItem key={memo._id!.toString()} dense disablePadding>
-      <ListItemButton>
+      <ListItemButton href={`/memos/${memo._id}`}>
         <ListItemText primary={memo.text.replaceAll(/\s+/gi, ' ')} />
       </ListItemButton>
     </ListItem>)}
