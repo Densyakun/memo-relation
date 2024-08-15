@@ -10,20 +10,36 @@ export default async function handler(
     const { method } = req;
     switch (method) {
       case "GET": {
-        const skip = Math.max(0, parseInt(String(req.query.skip) || "") || 0);
-        const take = parseInt(String(req.query.take) || "") || 10;
-
         const myDB = (await clientPromise).db(DB_NAME);
         const myColl = myDB.collection<MemoData>("memos");
 
-        const cursor = myColl.find({}, {
-          sort: { "_id": 1 },
-          skip,
-          limit: take,
-        });
-        const allValues = await cursor.toArray();
+        const text = req.query.text || "";
 
-        res.status(200).json(allValues);
+        if (text) {
+          const cursor = myColl.find(
+            {
+              text: { $regex: text as string }
+            },
+            {
+              sort: { "_id": -1 },
+            }
+          );
+          const allValues = await cursor.toArray();
+
+          res.status(200).json(allValues);
+        } else {
+          const skip = Math.max(0, parseInt(String(req.query.skip) || "") || 0);
+          const take = parseInt(String(req.query.take) || "") || 10;
+
+          const cursor = myColl.find({}, {
+            sort: { "_id": 1 },
+            skip,
+            limit: take,
+          });
+          const allValues = await cursor.toArray();
+
+          res.status(200).json(allValues);
+        }
 
         break;
       }
@@ -39,8 +55,8 @@ export default async function handler(
         const myColl = myDB.collection<MemoData>("memos");
 
         const doc: MemoData = {
-          _id: undefined!,
-          text: json.text,
+          text: json.text as string,
+          tagMemos: [],
         };
         const result = await myColl.insertOne(doc);
 

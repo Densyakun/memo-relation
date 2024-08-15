@@ -1,6 +1,7 @@
 # memo-relation
 
 - メモを管理するWebアプリ
+- メモに別のメモをタグ付けしたり、タグにもタグ付けできる
 - MongoDB
 
 ## Getting Started

@@ -1,4 +1,3 @@
-import appState from "@/lib/state";
 import { Button, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
@@ -27,10 +26,7 @@ export default function PostMemo() {
       .then(json => {
         reset();
 
-        if (appState.memos && appState.memos.length < 10)
-          appState.memos.push(json);
-        else
-          mutate(`/api/number-of-memos`);
+        mutate(key => typeof key === 'string' && (key.startsWith(`/api/number-of-memos`) || key.startsWith(`/api/memos`)));
       })
       .finally(() => setDisabled(false));
   };

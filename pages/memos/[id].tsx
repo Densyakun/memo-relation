@@ -1,4 +1,5 @@
 import Memo from "@/components/Memo";
+import MemoDetails from "@/components/MemoDetails";
 import useMemo from "@/lib/useMemo";
 import { Box, Button, Stack } from "@mui/material";
 import Head from "next/head";
@@ -21,6 +22,7 @@ export default function UserPage() {
           </Button>
         </Box>
         <Memo id={query.id as string} />
+        <MemoDetails id={query.id as string} />
       </Stack>
     </>
   );
