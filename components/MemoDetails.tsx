@@ -1,10 +1,10 @@
-import useMemo from "@/lib/useMemo";
+import useMyMemo from "@/lib/useMyMemo";
 import { Box, Chip, Typography } from "@mui/material";
 import MemoSearch from "./MemoSearch";
 import MemoList from "./MemoList";
 
 export default function MemoDetails({ id }: { id: string }) {
-  const { data: memo } = useMemo(id as string);
+  const { data: memo } = useMyMemo(id as string);
 
   if (!memo) return null;
 

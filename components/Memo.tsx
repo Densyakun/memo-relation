@@ -1,8 +1,8 @@
-import useMemo from "@/lib/useMemo";
+import useMyMemo from "@/lib/useMyMemo";
 import { Typography } from "@mui/material";
 
 export default function Memo({ id }: { id: string }) {
-  const { data, error, isLoading } = useMemo(id);
+  const { data, error, isLoading } = useMyMemo(id);
 
   if (error) return "Failed to load user";
   if (isLoading) return "Loading...";

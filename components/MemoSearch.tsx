@@ -12,7 +12,10 @@ export default function MemoSearch({ memo }: { memo?: MemoData }) {
     },
   });
 
-  const [memos1, setMemos1] = useState<MemoData[]>([]);
+  const [memos1, setMemos1] = useState<{
+    _id: string;
+    text: string;
+  }[]>([]);
 
   useEffect(() => {
     const subscription = watch((value) => {
@@ -30,13 +33,16 @@ export default function MemoSearch({ memo }: { memo?: MemoData }) {
 
             memos.sort((memoA, memoB) => (memoB.text === value.text ? 1 : 0) - (memoA.text === value.text ? 1 : 0));
 
-            setMemos1(memos.filter(memo1 => memo?.tagMemos.findIndex(memo => memo._id === memo1._id) === -1));
+            setMemos1(memos.filter(memo1 => memo?.tagMemos.findIndex(memo => memo._id === memo1._id) === -1) as {
+              _id: string;
+              text: string;
+            }[]);
           });
       else
         setMemos1([]);
     });
     return () => subscription.unsubscribe();
-  }, [watch, memo?._id]);
+  }, [watch]);
 
   return <>
     <Stack direction="row">

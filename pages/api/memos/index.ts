@@ -57,6 +57,7 @@ export default async function handler(
         const doc: MemoData = {
           text: json.text as string,
           tagMemos: [],
+          taggedMemos: [],
         };
         const result = await myColl.insertOne(doc);
 

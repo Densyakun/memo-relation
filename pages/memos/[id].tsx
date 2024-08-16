@@ -1,13 +1,13 @@
 import Memo from "@/components/Memo";
 import MemoDetails from "@/components/MemoDetails";
-import useMemo from "@/lib/useMemo";
+import useMyMemo from "@/lib/useMyMemo";
 import { Box, Button, Stack } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
 export default function UserPage() {
   const { query } = useRouter();
-  const { data } = useMemo(query.id as string);
+  const { data } = useMyMemo(query.id as string);
 
   return (
     <>
