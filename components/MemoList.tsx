@@ -8,7 +8,10 @@ export default function MemoList({
   onClick = () => { },
   href,
 }: {
-  memos: MemoData[];
+  memos: {
+    _id: string;
+    text: string;
+  }[];
   error?: Error;
   isLoading?: boolean;
   onClick?: (id: string) => void;

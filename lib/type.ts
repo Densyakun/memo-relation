@@ -7,6 +7,10 @@ export type MemoData = {
     _id: string;
     text: string;
   }[];
+  taggedMemos: {
+    _id: string;
+    text: string;
+  }[];
 };
 
 export type MemoDataSchema = {

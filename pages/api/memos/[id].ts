@@ -25,20 +25,31 @@ export default async function handler(
           break;
         }
 
-        let tagMemos: MemoDataSchema[] = [];
+        let tagMemos: {
+          _id: string;
+          text: string;
+        }[] = [];
 
         if (value.tagMemos)
           tagMemos = await myColl.find({
             _id: { $in: value.tagMemos },
-          }).toArray();
+          }).map(memo => ({
+            _id: memo._id?.toString(),
+            text: memo.text,
+          })).toArray();
+
+        let taggedMemos = await myColl.find({
+          tagMemos: { $all: [value._id] },
+        }).map(memo => ({
+          _id: memo._id?.toString(),
+          text: memo.text,
+        })).toArray();
 
         res.status(200).json({
           _id: value._id.toString(),
           text: value.text,
-          tagMemos: tagMemos.map(memo => ({
-            _id: memo._id?.toString(),
-            text: memo.text,
-          })) || [],
+          tagMemos: tagMemos || [],
+          taggedMemos,
         } as MemoData);
 
         break;

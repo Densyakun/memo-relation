@@ -27,7 +27,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Stack spacing={1}>
-        <MemoList memos={memos as MemoData[]} error={error} isLoading={isLoading} href={id => `/memos/${id}`} />
+        <MemoList
+          memos={memos as {
+            _id: string;
+            text: string;
+          }[]}
+          error={error}
+          isLoading={isLoading}
+          href={id => `/memos/${id}`}
+        />
         <MemoListPagination />
         <PostMemo />
       </Stack>
