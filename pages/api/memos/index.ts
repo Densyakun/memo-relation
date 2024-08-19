@@ -1,11 +1,15 @@
 import { clientPromise, DB_NAME } from "@/lib/mongodb";
 import { MemoData } from "@/lib/type";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const session = await getServerSession(req, res, authOptions);
+
   try {
     const { method } = req;
     switch (method) {
@@ -31,7 +35,16 @@ export default async function handler(
           const skip = Math.max(0, parseInt(String(req.query.skip) || "") || 0);
           const take = parseInt(String(req.query.take) || "") || 10;
 
-          const cursor = myColl.find({}, {
+          const cursor = myColl.find({
+            $or: [
+              {
+                creator: { $exists: false },
+              },
+              {
+                creator: session?.user?.email || "",
+              },
+            ],
+          }, {
             sort: { "_id": 1 },
             skip,
             limit: take,
@@ -58,6 +71,7 @@ export default async function handler(
           text: json.text as string,
           tagMemos: [],
           taggedMemos: [],
+          creator: session?.user?.email || "",
         };
         const result = await myColl.insertOne(doc);
 

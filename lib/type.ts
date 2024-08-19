@@ -11,10 +11,12 @@ export type MemoData = {
     _id: string;
     text: string;
   }[];
+  creator: string;
 };
 
 export type MemoDataSchema = {
   _id?: ObjectId;
   text: string;
   tagMemos: ObjectId[];
+  creator: string;
 };

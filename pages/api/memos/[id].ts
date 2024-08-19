@@ -2,11 +2,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { MemoData, MemoDataSchema } from "@/lib/type";
 import { clientPromise, DB_NAME } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const session = await getServerSession(req, res, authOptions);
+
   try {
     const { query, method } = req;
     const id = query.id as string;
@@ -25,6 +29,11 @@ export default async function handler(
           break;
         }
 
+        if (!(!value.creator || value.creator === session?.user?.email)) {
+          res.status(403).end();
+          break;
+        }
+
         let tagMemos: {
           _id: string;
           text: string;
@@ -33,6 +42,14 @@ export default async function handler(
         if (value.tagMemos)
           tagMemos = await myColl.find({
             _id: { $in: value.tagMemos },
+            $or: [
+              {
+                creator: { $exists: false },
+              },
+              {
+                creator: session?.user?.email || "",
+              },
+            ],
           }).map(memo => ({
             _id: memo._id?.toString(),
             text: memo.text,
@@ -40,6 +57,14 @@ export default async function handler(
 
         let taggedMemos = await myColl.find({
           tagMemos: { $all: [value._id] },
+          $or: [
+            {
+              creator: { $exists: false },
+            },
+            {
+              creator: session?.user?.email || "",
+            },
+          ],
         }).map(memo => ({
           _id: memo._id?.toString(),
           text: memo.text,
@@ -63,6 +88,13 @@ export default async function handler(
           set['text'] = text;
         if (tagMemos !== undefined)
           set['tagMemos'] = Array.isArray(tagMemos) ? tagMemos.map(id => new ObjectId(id)) : [new ObjectId(tagMemos)];
+
+        const value = await myColl.findOne({ _id: new ObjectId(id) });
+
+        if (value && !(!value.creator || value.creator === session?.user?.email)) {
+          res.status(403).end();
+          break;
+        }
 
         await myColl.updateOne(
           { _id: new ObjectId(id) },

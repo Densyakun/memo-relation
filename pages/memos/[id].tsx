@@ -1,3 +1,4 @@
+import LoginButton from "@/components/LoginButton";
 import Memo from "@/components/Memo";
 import MemoDetails from "@/components/MemoDetails";
 import useMyMemo from "@/lib/useMyMemo";
@@ -16,6 +17,9 @@ export default function UserPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Stack spacing={1}>
+        <Box>
+          <LoginButton />
+        </Box>
         <Box>
           <Button variant="outlined" href="/">
             {"< Back"}

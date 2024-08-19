@@ -2,7 +2,9 @@
 
 - メモを管理するWebアプリ
 - メモに別のメモをタグ付けしたり、タグにもタグ付けできる
+- 閲覧可能なアカウントを限定できるプライベートメモ
 - MongoDB
+- (NextAuth.js)[https://next-auth.js.org/]
 
 ## Getting Started
 

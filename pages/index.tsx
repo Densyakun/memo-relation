@@ -1,9 +1,9 @@
+import LoginButton from "@/components/LoginButton";
 import MemoList from "@/components/MemoList";
 import MemoListPagination from "@/components/MemoListPagination";
 import PostMemo from "@/components/PostMemo";
 import appState from "@/lib/state";
-import { MemoData } from "@/lib/type";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Head from "next/head";
 import useSWR from "swr";
 import { useSnapshot } from "valtio";
@@ -27,6 +27,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Stack spacing={1}>
+        <Box>
+          <LoginButton />
+        </Box>
         <MemoList
           memos={memos as {
             _id: string;
