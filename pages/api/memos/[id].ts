@@ -47,6 +47,9 @@ export default async function handler(
                 creator: { $exists: false },
               },
               {
+                creator: "",
+              },
+              {
                 creator: session?.user?.email || "",
               },
             ],
@@ -60,6 +63,9 @@ export default async function handler(
           $or: [
             {
               creator: { $exists: false },
+            },
+            {
+              creator: "",
             },
             {
               creator: session?.user?.email || "",

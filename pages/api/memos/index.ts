@@ -22,7 +22,18 @@ export default async function handler(
         if (text) {
           const cursor = myColl.find(
             {
-              text: { $regex: text as string }
+              text: { $regex: text as string },
+              $or: [
+                {
+                  creator: { $exists: false },
+                },
+                {
+                  creator: "",
+                },
+                {
+                  creator: session?.user?.email || "",
+                },
+              ],
             },
             {
               sort: { "_id": -1 },
@@ -39,6 +50,9 @@ export default async function handler(
             $or: [
               {
                 creator: { $exists: false },
+              },
+              {
+                creator: "",
               },
               {
                 creator: session?.user?.email || "",
