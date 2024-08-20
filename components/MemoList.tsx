@@ -14,7 +14,10 @@ export default function MemoList({
   }[];
   error?: Error;
   isLoading?: boolean;
-  onClick?: (id: string) => void;
+  onClick?: (memo: {
+    _id: string;
+    text: string;
+  }) => void;
   href?: (id: string) => string;
 }) {
   if (error)
@@ -35,7 +38,7 @@ export default function MemoList({
             <ListItemText primary={memo.text.replaceAll(/\s+/gi, ' ')} />
           </ListItemButton>
           :
-          <ListItemButton onClick={() => onClick(id)}>
+          <ListItemButton onClick={() => onClick(memo)}>
             <ListItemText primary={memo.text.replaceAll(/\s+/gi, ' ')} />
           </ListItemButton>
         }

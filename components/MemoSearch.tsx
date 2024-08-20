@@ -53,14 +53,18 @@ export default function MemoSearch({ memo }: { memo?: MemoData }) {
         render={({ field }) => <TextField multiline variant="outlined" {...field} />}
       />
     </Stack>
-    <MemoList memos={memos1} onClick={id => {
-      const index = memos1.findIndex(memo => memo._id === id);
+    <MemoList memos={memos1} onClick={memo1 => {
+      if (!memo) return;
+
+      const index = memos1.findIndex(memo => memo._id === memo1._id);
       memos1.splice(index, 1);
       setMemos1([...memos1]);
 
-      fetch(`/api/memos/${memo?._id}?${[...(memo?.tagMemos.map(memo => memo._id) || []), id].map(id => `tagMemos[]=${id}`).join("&")}`, { method: "PUT" })
+      memo.tagMemos.push(memo1);
+
+      fetch(`/api/memos/${memo._id}?${memo.tagMemos.map(memo => memo._id).map(id => `tagMemos[]=${id}`).join("&")}`, { method: "PUT" })
         .then(_ =>
-          mutate(`/api/memos/${memo?._id}`)
+          mutate(`/api/memos/${memo._id}`)
         );
     }} />
   </>;
