@@ -98,7 +98,7 @@ export default async function handler(
 
         const value = await myColl.findOne({ _id: new ObjectId(id) });
 
-        if (value && !(!value.creator || value.creator === session?.user?.email)) {
+        if (value && (!value.creator || value.creator !== session?.user?.email)) {
           res.status(403).end();
           break;
         }
