@@ -92,8 +92,9 @@ export default async function handler(
         const set: any = {};
         if (text !== undefined)
           set['text'] = text;
-        if (tagMemos !== undefined)
-          set['tagMemos'] = Array.isArray(tagMemos) ? tagMemos.map(id => new ObjectId(id)) : [new ObjectId(tagMemos)];
+        set['tagMemos'] = tagMemos === undefined
+          ? []
+          : Array.isArray(tagMemos) ? tagMemos.map(id => new ObjectId(id)) : [new ObjectId(tagMemos)];
 
         const value = await myColl.findOne({ _id: new ObjectId(id) });
 
